@@ -1,3 +1,14 @@
 [submodule "external/opencv"]
 	path = external/opencv
 	url = https://github.com/opencv/opencv.git
+[submodule "external/glfw"]
+	path = external/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "external/imgui"]
+	path = external/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "external/boost"]
+	path = external/boost
+	url = https://github.com/boostorg/boost.git
+	fetchRecurseSubmodules = on
