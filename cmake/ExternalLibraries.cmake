@@ -110,7 +110,7 @@ function(target_link_with_external TARGET LIBRARY_NAME)
     endif()
 
     # Link the target with the library
-    target_link_libraries(${TARGET} ${LIBRARY_NAME}_lib)
+    target_link_libraries(${TARGET} PRIVATE ${LIBRARY_NAME}_lib)
 
     message(STATUS "Linked target '${TARGET}' with external library '${LIBRARY_NAME}'")
 endfunction()

@@ -1,0 +1,79 @@
+# Build directories
+/build/
+/out/
+/bin/
+/lib/
+/installed/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+Makefile
+*.cmake
+!cmake/*.cmake
+!cmake/external/*.cmake
+
+# Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Visual Studio Code
+.vscode/
+.ionide/
+
+# Generated libraries
+*.lib
+*.a
+*.dll
+*.so
+*.dylib
+
+# Generated executables
+*.exe
+*.out
+*.app
+
+# Temporary files
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Boost build artifacts
+boost_install/
+boost_build_output/
+fixed_libs/
+b2
+b2.exe
+project-config.jam
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb

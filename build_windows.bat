@@ -7,7 +7,7 @@ mkdir build
 
 echo Phase 1: Building external dependencies...
 cd build
-cmake .. -DBUILD_PHASE=BUILD_DEPS
+cmake .. -DBUILD_PHASE=BUILD_DEPS -G "Visual Studio 17 2022" -A x64
 if %ERRORLEVEL% neq 0 (
   echo CMake configuration for external dependencies failed.
   goto error
@@ -20,7 +20,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo Phase 2: Building main project...
-cmake .. -DBUILD_PHASE=MAIN
+cmake .. -DBUILD_PHASE=MAIN -G "Visual Studio 17 2022" -A x64
 if %ERRORLEVEL% neq 0 (
   echo CMake configuration for main project failed.
   goto error
@@ -36,7 +36,7 @@ cd ..
 
 echo.
 echo Build complete. To run the application, execute:
-echo   .\build\src\Release\opencv_app.exe
+echo   .\build\src\Release\multilibs_app.exe
 goto end
 
 :error

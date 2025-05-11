@@ -1,170 +1,161 @@
-﻿# CMake External Libraries Template
+﻿# CMake Multi-Library Template
 
-A lightweight, cross-platform CMake template for C++ projects that need to build and link against external libraries from source.
+A modern C++ template project that integrates multiple libraries (OpenCV, GLFW, ImGui, Boost) with a CMake-based build system. This template provides a solid foundation for graphics/GUI applications with a two-phase build approach for external dependencies.
 
-## What This Template Does
+## Features
 
-This template provides a clean and consistent way to:
+- Integrates multiple commonly used C++ libraries:
+  - **OpenCV**: Computer vision and image processing
+  - **GLFW**: Window creation and input handling
+  - **ImGui**: Immediate-mode GUI (docking branch)
+  - **Boost**: Wide range of C++ utilities (filesystem, threading, etc.)
+- Two-phase build system to manage dependencies cleanly
+- Cross-platform compatibility (Windows, Linux)
+- Modular CMake structure for easy expansion
+- Pre-configured with working examples
 
-1. Build external C++ libraries from source (as Git submodules)
-2. Configure them with custom options
-3. Make them available to your main project
-4. All while keeping configuration modular and maintainable
+## Prerequisites
 
-It works on both Windows and Linux, using a two-phase build process that handles dependencies correctly.
+- CMake 3.15 or higher
+- C++ compiler with C++14 support
+- Git
+- Visual Studio 2022 (for Windows) or GCC (for Linux)
 
-## Key Features
+## Cloning the Repository
 
-- **Modular Design**: Each external library has its own isolated configuration file
-- **Cross-Platform**: Works on both Windows and Linux
-- **Two-Phase Build**: Handles the "dependency problem" in CMake
-- **Git Submodules**: Tracks external libraries properly in your repository
-- **Static Linking**: Configured for static builds by default to avoid runtime dependencies
-- **Clean Structure**: Organized file layout that scales to multiple libraries
+This repository uses Git submodules to include external libraries. To clone the repository with all submodules, use the following command:
+
+```bash
+# Clone with all submodules at once
+git clone --recursive https://github.com/yourusername/CMake-multilibs-template.git
+
+# OR, if you've already cloned the repo without --recursive:
+git clone https://github.com/yourusername/CMake-multilibs-template.git
+cd CMake-multilibs-template
+git submodule update --init --recursive
+```
+
+### ImGui Docking Branch
+
+The ImGui library is configured to use the "docking" branch for enhanced UI capabilities. This is automatically set up during clone if you use the `--recursive` flag. If you need to update or check the ImGui branch:
+
+```bash
+# Check current ImGui branch
+cd external/imgui
+git branch
+
+# If needed, switch to docking branch
+git checkout docking
+
+# Go back to project root and update .gitmodules
+cd ../..
+git add external/imgui
+git commit -m "Set ImGui to docking branch"
+```
+
+## Building the Project
+
+The build process occurs in two phases:
+1. Phase 1: Build all external dependencies
+2. Phase 2: Build the main project using those dependencies
+
+### Windows
+
+Run the included batch file:
+
+```bash
+build_windows.bat
+```
+
+This will:
+1. Create and clean the build directory
+2. Configure and build external dependencies
+3. Configure and build the main application
+
+### Linux
+
+Run the included shell script:
+
+```bash
+./build_linux.sh
+```
+
+### Manual Build
+
+If you prefer to build manually:
+
+```bash
+# Create and enter build directory
+mkdir build
+cd build
+
+# Phase 1: Build dependencies
+cmake .. -DBUILD_PHASE=BUILD_DEPS
+cmake --build . --config Release
+
+# Phase 2: Build main project
+cmake .. -DBUILD_PHASE=MAIN
+cmake --build . --config Release
+
+# Return to project root
+cd ..
+```
+
+## Running the Application
+
+After building, the executable will be located in:
+
+- Windows: `build/src/Release/multilibs_app.exe`
+- Linux: `build/src/multilibs_app`
 
 ## Project Structure
 
 ```
-your-project/
-├── cmake/
-│   ├── ExternalLibraries.cmake     # Core framework
-│   ├── external/
-│   │   └── opencv.cmake            # One file per external library
-│   └── templates/
-│       └── library.cmake.template  # Template for new libraries
-├── external/
-│   └── opencv/                     # Git submodules for libraries
-├── src/
-│   ├── CMakeLists.txt              # Your project's code
-│   └── main.cpp
-├── build_windows.bat                       # Windows build script
-├── build_linux.sh                          # Linux build script
-└── CMakeLists.txt                  # Main project file
+CMake-multilibs-template/
+├── cmake/                     # CMake modules and configuration
+│   ├── external/              # Library-specific configuration
+│   ├── direct_boost.cmake     # Boost-specific build logic
+│   └── ExternalLibraries.cmake # Central dependency manager
+├── external/                  # External libraries (submodules)
+│   ├── boost/                 # Boost library
+│   ├── glfw/                  # GLFW library
+│   ├── imgui/                 # ImGui library (docking branch)
+│   └── opencv/                # OpenCV library
+├── src/                       # Source code
+│   ├── CMakeLists.txt         # Main project build configuration
+│   └── main.cpp               # Main application code
+├── .gitignore                 # Git ignore rules
+├── .gitmodules                # Git submodule configuration
+├── build_linux.sh             # Linux build script
+├── build_windows.bat          # Windows build script
+├── CMakeLists.txt             # Root CMake configuration
+└── README.md                  # This file
 ```
 
-## How to Use This Template
+## Adding New Dependencies
 
-### Step 1: Clone and Initialize
+To add a new external library:
 
-```bash
-# Clone this template
-git clone https://github.com/MaelGiese/OpenCV-CMake-Template.git my-project --recursive
-cd my-project
-```
+1. Add it as a Git submodule: `git submodule add https://github.com/example/library.git external/library`
+2. Create a library configuration file in `cmake/external/library.cmake`
+3. Register and configure the library in both build phases
 
-### Step 2: Build the Project
+## Customizing
 
-#### On Windows:
-```batch
-build_windows.bat
-```
-
-#### On Linux:
-```bash
-chmod +x build.sh
-./build_linux.sh
-```
-
-### Step 3: Adding a New External Library
-
-1. **Add the library as a submodule**:
-   ```bash
-   git submodule add https://github.com/example/library.git external/library_name
-   ```
-
-2. **Create the library configuration file**:
-   - Copy the template: `cp cmake/templates/library.cmake.template cmake/external/library_name.cmake`
-   - Edit the file, replacing all instances of:
-     - `library_name` with your library's name (e.g., `boost`)
-     - `Library` with capitalized name (e.g., `Boost`)
-   - Customize the build options for your specific library
-
-3. **Update the main CMakeLists.txt**:
-   ```cmake
-   # In the MAIN phase section:
-   configure_opencv()
-   configure_library_name()  # Add this line with your library's name
-   ```
-
-4. **Link with the library in your code**:
-   ```cmake
-   # In src/CMakeLists.txt:
-   target_link_with_external(your_executable library_name)
-   ```
-
-## How It Works
-
-The template uses a two-phase build process:
-
-1. **BUILD_DEPS Phase**:
-   - Builds all external libraries from source
-   - Uses the options defined in each library's configuration file
-   - Installs libraries to a local directory in the build folder
-
-2. **MAIN Phase**:
-   - Finds the built libraries using CMake's `find_package`
-   - Makes them available to your main project
-   - Builds your actual application
-
-This approach solves the common CMake issue where libraries need to be built before they can be found and used.
-
-## Example: Library Configuration
-
-Here's what a typical library configuration file looks like:
-
-```cmake
-# Register the library
-register_external_library(NAME boost)
-
-# Define build options
-add_external_library_phase(
-    NAME boost
-    PHASE build
-    CMAKE_ARGS
-        -DBUILD_SHARED_LIBS=OFF
-        -DBOOST_BUILD_EXAMPLES=OFF
-        -DBOOST_BUILD_TOOLS=OFF
-        -DBOOST_INCLUDE_LIBRARIES=filesystem,system
-)
-
-# Define how to find and configure the library
-function(configure_boost)
-    # Platform-specific paths
-    if(WIN32)
-        set(Boost_ROOT ${boost_INSTALL_DIR})
-    else()
-        set(Boost_ROOT ${boost_INSTALL_DIR})
-    endif()
-    
-    # Find the library
-    set(Boost_USE_STATIC_LIBS ON)
-    find_package(Boost REQUIRED COMPONENTS filesystem system)
-    
-    # Make it available to the main project
-    update_external_library(
-        NAME boost
-        INCLUDES "${Boost_INCLUDE_DIRS}"
-        LIBRARIES "${Boost_LIBRARIES}"
-    )
-endfunction()
-```
-
-## Tips & Best Practices
-
-- **Keep Library Options Minimal**: Only enable the parts of libraries you actually need
-- **Customize Installation Paths** if a library has non-standard CMake config locations
-- **Handle Platform Differences** in the `configure_*` function for each library
-- **Check Library Documentation** for the correct `find_package` usage
-- **Consider Library Versions**: Pin specific versions in your Git submodules
+- Modify `src/main.cpp` to build your own application
+- Add more source files to `src/` and update `src/CMakeLists.txt` accordingly
+- Adjust CMake options in the build scripts as needed
 
 ## Troubleshooting
 
-### Common Issues:
-
-1. **Library Not Found**: Make sure the `find_package` path is correct for your platform
-2. **Build Errors**: Check that you've added all necessary dependencies
-3. **Linking Errors**: Ensure you're linking against the correct components
+- **Boost Build Errors**: If you encounter issues with Boost libraries, check that the version detected in headers matches the built libraries. The template includes version detection and library name fixes.
+- **ImGui Docking**: If ImGui features like docking aren't working, verify that ImGui is on the docking branch.
+- **Library Not Found**: Ensure all submodules are properly initialized and updated.
 
 ## License
 
-This template is available under the MIT License.
+This template is provided under the MIT License. See the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
