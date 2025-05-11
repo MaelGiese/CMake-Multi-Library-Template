@@ -14,10 +14,10 @@ This template solves a common problem in C++ development: **managing external de
 
 ```bash
 # Clone with all submodules
-git clone --recursive https://github.com/MaelGiese/CMake-multilibs-template.git
+git clone --recursive https://github.com/MaelGiese/CMake-Multi-Library-Template.git
 
 # OR clone and initialize submodules separately
-git clone https://github.com/MaelGiese/CMake-multilibs-template.git
+git clone https://github.com/MaelGiese/CMake-Multi-Library-Template.git
 cd CMake-multilibs-template
 git submodule update --init --recursive
 ```
