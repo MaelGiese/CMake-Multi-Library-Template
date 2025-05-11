@@ -27,10 +27,10 @@ This repository uses Git submodules to include external libraries. To clone the 
 
 ```bash
 # Clone with all submodules at once
-git clone --recursive https://github.com/yourusername/CMake-multilibs-template.git
+git clone --recursive https://github.com/MaelGiese/CMake-multilibs-template.git
 
 # OR, if you've already cloned the repo without --recursive:
-git clone https://github.com/yourusername/CMake-multilibs-template.git
+git clone https://github.com/MaelGiese/CMake-multilibs-template.git
 cd CMake-multilibs-template
 git submodule update --init --recursive
 ```
