@@ -7,9 +7,11 @@ add_external_library_phase(
     PHASE build
     CMAKE_ARGS
         # Disable unwanted modules
-        -DBUILD_opencv_calib3d=OFF
-        -DBUILD_opencv_features2d=OFF
-        -DBUILD_opencv_flann=OFF
+        -DBUILD_opencv_calib3d=ON
+        -DBUILD_opencv_features2d=ON
+        -DBUILD_opencv_flann=ON
+		-DBUILD_opencv_video=ON
+        -DBUILD_opencv_videoio=ON
         -DBUILD_opencv_dnn=OFF
         -DBUILD_opencv_ml=OFF
         -DBUILD_opencv_photo=OFF
@@ -19,9 +21,7 @@ add_external_library_phase(
         -DBUILD_opencv_gapi=OFF
         -DBUILD_opencv_objdetect=OFF
         -DBUILD_opencv_stitching=OFF
-        -DBUILD_opencv_ts=OFF
-        -DBUILD_opencv_video=OFF
-        -DBUILD_opencv_videoio=OFF
+        -DBUILD_opencv_ts=OFF        
         -DBUILD_opencv_world=OFF
         # Build configuration
         -DBUILD_SHARED_LIBS=OFF

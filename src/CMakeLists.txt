@@ -1,4 +1,55 @@
-add_executable(multilibs_app main.cpp)
+# Define source files by module
+set(CORE_SOURCES
+    core/core.cpp
+)
+
+set(CORE_HEADERS
+    core/core.h
+)
+
+set(GRAPHICS_SOURCES
+    graphics/graphics.cpp
+)
+
+set(GRAPHICS_HEADERS
+    graphics/graphics.h
+)
+
+set(UTILS_SOURCES
+    utils/utils.cpp
+)
+
+set(UTILS_HEADERS
+    utils/utils.h
+)
+
+# Combine for the main executable
+add_executable(multilibs_app
+    main.cpp
+    ${CORE_SOURCES}
+    ${GRAPHICS_SOURCES}
+    ${UTILS_SOURCES}
+)
+
+# Add headers for IDE integration and better organization
+target_sources(multilibs_app PRIVATE
+    ${CORE_HEADERS}
+    ${GRAPHICS_HEADERS}
+    ${UTILS_HEADERS}
+)
+
+# Set up include paths so you can use #include "core/core_module1.h"
+target_include_directories(multilibs_app PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/graphics
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+
+
+
+# add_executable(multilibs_app main.cpp)
 
 # Link with external libraries
 target_link_with_external(multilibs_app opencv)
@@ -27,6 +78,14 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 
+if(WIN32)
+    target_compile_definitions(multilibs_app PRIVATE 
+        _WIN32_WINNT=0x0601  # Windows 7 or later
+    )
+endif()
+
+
+############################################################################################ BOOST ############################################################################################
 # CRITICAL: Disable Boost auto-linking feature in MSVC by defining this preprocessor variable
 target_compile_definitions(multilibs_app PRIVATE 
     BOOST_ALL_NO_LIB  # This disables Boost's auto-linking feature
